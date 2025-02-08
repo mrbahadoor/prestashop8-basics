@@ -1,13 +1,13 @@
+ 
 
-[{shop_url}] 
+{shop_url}
 
-Hi, 
+Hi,
 
-The stock cover is now less than the specified minimum of:
-{warning_coverage}.
+Your stock cover is now less than the specified minimum of: {warning_coverage}
 
-CURRENT STOCK COVER: {current_coverage} 		 
+Current stock cover: {current_coverage}
 
-{shop_name} [{shop_url}] powered by
-PrestaShop(tm) [http://www.prestashop.com/] 
+[{shop_name}]({shop_url})
 
+Powered by [PrestaShop](https://www.prestashop-project.org/)
