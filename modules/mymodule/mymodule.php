@@ -18,6 +18,8 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+use PrestaShopBundle\Entity\Repository\TabRepository;
 
 if (!defined('_PS_VERSION_')) {
     exit;
@@ -58,7 +60,8 @@ class MyModule extends Module
         }
 
     return (
-            parent::install() 
+            parent::install()
+            && $this->installTab()
             && Configuration::updateValue('MYMODULE_NAME', 'my module')
         ); 
     }
@@ -66,9 +69,51 @@ class MyModule extends Module
     public function uninstall()
     {
         return (
-            parent::uninstall() 
+            parent::uninstall()
+            && $this->uninstallTab()
             && Configuration::deleteByName('MYMODULE_NAME')
         );
-    } 
+    }
+
+    private function installTab(): bool
+    {
+        $tab = new Tab();
+        $tab->active = 1;
+        $tab->class_name = 'AdminMyModule'; // Matches _legacy_controller
+        $tab->route_name = 'mymodule_admin_configure'; // Your Symfony route name
+        $tab->module = $this->name;
+        // Deprecated
+        // $tab->id_parent = (int) Tab::getIdFromClassName('IMPROVE'); // Or 'DEFAULT', etc. 
+        
+        // Access tab repository as a service
+        // /** @var TabRepository */
+        // $tabRepository = SymfonyContainer::getInstance()->get('prestashop.core.admin.tab.repository');
+        
+        // Get the parent tab ID
+        // $parentTab = $tabRepository->findOneByClassName('IMPROVE');
+        // if ($parentTab) {
+        //     $tab->id_parent = (int) $parentTab->getId();
+        // } else {
+        //     // Handle the case where the parent tab is not found
+        //     return false;
+        // }
+        $tab->id_parent = (int) Tab::getIdFromClassName('DEFAULT'); // Or 'DEFAULT', etc.
+
+        foreach (Language::getLanguages(true) as $lang) {
+            $tab->name[$lang['id_lang']] = 'My Module';
+        }
+
+        return $tab->add();
+    }
+
+    private function uninstallTab(): bool
+    {
+        $idTab = Tab::getIdFromClassName('AdminMyModule');
+        if ($idTab) {
+            $tab = new Tab($idTab);
+            return $tab->delete();
+        }
+        return true;
+    }
 
 }
