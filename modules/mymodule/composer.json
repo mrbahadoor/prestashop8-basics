@@ -1,0 +1,16 @@
+{
+    "name": "rushdi/mymodule",
+    "description": "Practice module",
+    "autoload": {
+        "psr-4": {
+            "PrestaShop\\Module\\MyModule\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rushdi Bahadoor",
+            "email": "my_name@example.com"
+        }
+    ],
+    "require": {}
+}

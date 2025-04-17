@@ -2,6 +2,5 @@ my_module_admin_configure:
     path: /mymodule/configure
     methods: [GET]
     defaults:
-        _controller: 'MyModule\Controller\Admin\MyModuleController::configure'
+        _controller: 'PrestaShop\Module\MyModule\Controller\Admin\MyModuleController::configure'
         _legacy_controller: 'AdminMyModule'
-        _legacy_link: 'AdminMyModule'

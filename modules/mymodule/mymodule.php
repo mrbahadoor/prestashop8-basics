@@ -25,6 +25,9 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+// Needed for install process
+require_once __DIR__ . '/vendor/autoload.php';
+
 class MyModule extends Module
 {
     public function __construct()
@@ -41,6 +44,25 @@ class MyModule extends Module
         $this->bootstrap = true;
 
         parent::__construct();
+
+
+        $tabNames = [];
+        foreach (Language::getLanguages(true) as $lang) {
+            $tabNames[$lang['locale']] = "Rushdi Module";
+            // $this->trans('Link List', array(), 'Modules.Linklist.Admin', $lang['locale']);
+        }
+        $this->tabs = [
+            [
+                'route_name' => 'my_module_admin_configure',
+                'class_name' => 'AdminMyModule',
+                'visible' => true,
+                'name' => $tabNames,
+                'parent_class_name' => 'AdminParentThemes',
+                // 'wording' => 'Link List',
+                // 'wording_domain' => 'Modules.Linklist.Admin'
+            ],
+        ];
+
 
         $this->displayName = $this->trans('My module', [], 'Modules.Mymodule.Admin');
         $this->description = $this->trans('Description of my module.', [], 'Modules.Mymodule.Admin');
@@ -61,7 +83,6 @@ class MyModule extends Module
 
     return (
             parent::install()
-            && $this->installTab()
             && Configuration::updateValue('MYMODULE_NAME', 'my module')
         ); 
     }
@@ -70,50 +91,7 @@ class MyModule extends Module
     {
         return (
             parent::uninstall()
-            && $this->uninstallTab()
             && Configuration::deleteByName('MYMODULE_NAME')
         );
     }
-
-    private function installTab(): bool
-    {
-        $tab = new Tab();
-        $tab->active = 1;
-        $tab->class_name = 'AdminMyModule'; // Matches _legacy_controller
-        $tab->route_name = 'mymodule_admin_configure'; // Your Symfony route name
-        $tab->module = $this->name;
-        // Deprecated
-        // $tab->id_parent = (int) Tab::getIdFromClassName('IMPROVE'); // Or 'DEFAULT', etc. 
-        
-        // Access tab repository as a service
-        // /** @var TabRepository */
-        // $tabRepository = SymfonyContainer::getInstance()->get('prestashop.core.admin.tab.repository');
-        
-        // Get the parent tab ID
-        // $parentTab = $tabRepository->findOneByClassName('IMPROVE');
-        // if ($parentTab) {
-        //     $tab->id_parent = (int) $parentTab->getId();
-        // } else {
-        //     // Handle the case where the parent tab is not found
-        //     return false;
-        // }
-        $tab->id_parent = (int) Tab::getIdFromClassName('DEFAULT'); // Or 'DEFAULT', etc.
-
-        foreach (Language::getLanguages(true) as $lang) {
-            $tab->name[$lang['id_lang']] = 'My Module';
-        }
-
-        return $tab->add();
-    }
-
-    private function uninstallTab(): bool
-    {
-        $idTab = Tab::getIdFromClassName('AdminMyModule');
-        if ($idTab) {
-            $tab = new Tab($idTab);
-            return $tab->delete();
-        }
-        return true;
-    }
-
 }
