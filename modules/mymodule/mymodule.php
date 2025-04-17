@@ -18,10 +18,15 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License version 3.0
  */
 
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+use PrestaShopBundle\Entity\Repository\TabRepository;
 
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
+// Needed for install process
+require_once __DIR__ . '/vendor/autoload.php';
 
 class MyModule extends Module
 {
@@ -39,6 +44,25 @@ class MyModule extends Module
         $this->bootstrap = true;
 
         parent::__construct();
+
+
+        $tabNames = [];
+        foreach (Language::getLanguages(true) as $lang) {
+            $tabNames[$lang['locale']] = "Rushdi Module";
+            // $this->trans('Link List', array(), 'Modules.Linklist.Admin', $lang['locale']);
+        }
+        $this->tabs = [
+            [
+                'route_name' => 'my_module_admin_configure',
+                'class_name' => 'AdminMyModule',
+                'visible' => true,
+                'name' => $tabNames,
+                'parent_class_name' => 'AdminParentThemes',
+                // 'wording' => 'Link List',
+                // 'wording_domain' => 'Modules.Linklist.Admin'
+            ],
+        ];
+
 
         $this->displayName = $this->trans('My module', [], 'Modules.Mymodule.Admin');
         $this->description = $this->trans('Description of my module.', [], 'Modules.Mymodule.Admin');
@@ -58,7 +82,7 @@ class MyModule extends Module
         }
 
     return (
-            parent::install() 
+            parent::install()
             && Configuration::updateValue('MYMODULE_NAME', 'my module')
         ); 
     }
@@ -66,9 +90,8 @@ class MyModule extends Module
     public function uninstall()
     {
         return (
-            parent::uninstall() 
+            parent::uninstall()
             && Configuration::deleteByName('MYMODULE_NAME')
         );
-    } 
-
+    }
 }
