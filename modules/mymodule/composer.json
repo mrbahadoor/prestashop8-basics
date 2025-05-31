@@ -3,7 +3,7 @@
     "description": "Practice module",
     "autoload": {
         "psr-4": {
-            "PrestaShop\\Module\\MyModule\\": "src/"
+            "MyModule\\": "src/"
         }
     },
     "authors": [

@@ -1,14 +1,14 @@
 <?php
 
-namespace PrestaShop\Module\MyModule\Controller\Admin;
+namespace MyModule\Controller;
 
 use PrestaShopBundle\Controller\Admin\FrameworkBundleAdminController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class MyModuleController extends FrameworkBundleAdminController
+class AdminMyModuleController extends FrameworkBundleAdminController
 {
-    const TAB_CLASS_NAME = 'AdminMyModule';
+    const TAB_CLASS_NAME = 'AdminMyModuleController';
     
     /**
      * @Route("/mymodule/configure", name="mymodule_admin_configure", methods={"GET"})

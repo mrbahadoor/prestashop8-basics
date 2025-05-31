@@ -57,7 +57,7 @@ class MyModule extends Module
                 'class_name' => 'AdminMyModule',
                 'visible' => true,
                 'name' => $tabNames,
-                'parent_class_name' => 'AdminParentThemes',
+                'parent_class_name' => 'SELL',
                 // 'wording' => 'Link List',
                 // 'wording_domain' => 'Modules.Linklist.Admin'
             ],
