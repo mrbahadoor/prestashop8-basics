@@ -1,11 +1,15 @@
 services:
-  rushdi.my_module.my_test_command:
-    class: MyModule\Command\MyTestCommand
-    tags:
-      - { name: 'console.command', command: 'my-module:my-test-command' }
+  _defaults:
+    public: true
+    autowire: true
+    autoconfigure: true
 
-  MyModule\Controller\AdminMyModuleController:
-    class: MyModule\Controller\AdminMyModuleController
-    arguments: []
-    tags:
-      - { name: controller.service_arguments }
+  mymodule.data_service:
+    class: MyModule\Service\DataService
+    # arguments: ['@service_container']
+
+  
+imports:
+  - {resource: 'commands.yml'}
+  - {resource: 'controllers.yml'}
+

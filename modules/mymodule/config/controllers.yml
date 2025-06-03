@@ -1,0 +1,10 @@
+services:
+  _defaults:
+    public: true
+
+  MyModule\Controller\AdminMyModuleController:
+    class: MyModule\Controller\AdminMyModuleController
+    arguments:
+      - '@mymodule.data_service'
+    tags:
+      - { name: controller.service_arguments }

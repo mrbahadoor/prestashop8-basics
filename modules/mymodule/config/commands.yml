@@ -1,0 +1,8 @@
+services:
+  _defaults:
+    public: true
+
+  rushdi.my_module.my_test_command:
+    class: MyModule\Command\MyTestCommand
+    tags:
+      - { name: 'console.command', command: 'my-module:my-test-command' }

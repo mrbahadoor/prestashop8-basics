@@ -1,6 +1,6 @@
 my_module_admin_configure:
     path: /mymodule/configure
-    methods: [GET]
+    methods: [GET, POST]
     defaults:
         _controller: 'MyModule\Controller\AdminMyModuleController::configure'
         _legacy_controller: 'AdminMyModule'
